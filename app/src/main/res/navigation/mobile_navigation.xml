@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_wol" />
 
     <fragment
+        android:id="@+id/nav_wol_config"
+        android:name="com.sixiaolong.androidwol.ui.wol.WoLConfigFragment"
+        android:label="@string/menu_wol_config"
+        tools:layout="@layout/fragment_wol_config" />
+
+    <fragment
         android:id="@+id/nav_home"
         android:name="com.sixiaolong.androidwol.ui.home.HomeFragment"
         android:label="@string/menu_home"

@@ -1,6 +1,8 @@
 package com.sixiaolong.androidwol.ui.wol
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.sixiaolong.androidwol.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,28 +20,59 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 
 class WoLFragment : Fragment() {
-    private lateinit var button: Button
-
-    @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(com.sixiaolong.androidwol.R.layout.fragment_wol, container, false)
-        button = view.findViewById(com.sixiaolong.androidwol.R.id.WoLButton)
-        button.setOnClickListener {
-            val mMacAddress = view.findViewById<EditText>(com.sixiaolong.androidwol.R.id.MacAddress)
-            val iIPAddress = view.findViewById<EditText>(com.sixiaolong.androidwol.R.id.IPAddress)
-            val iIPPort = view.findViewById<EditText>(com.sixiaolong.androidwol.R.id.IPPort)
-
-            val macAddress = mMacAddress.text.toString()
-            val ipAddress = iIPAddress.text.toString()
-            val ipPort = iIPPort.text.toString().toInt()
-            wakeOnLan(macAddress, ipAddress, ipPort)
-        }
-        return view
-    }
+//    private lateinit var button: Button
+//
+//    // 引入SharedPreferences进行轻量化存储
+//    private lateinit var mSharedPreferences: SharedPreferences
+//    private lateinit var mEditor: SharedPreferences.Editor
+//
+//    @SuppressLint("MissingInflatedId")
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        // 初始化三个SharedPreferences
+//        mSharedPreferences = requireActivity().getSharedPreferences("MacAddress", MODE_PRIVATE)
+//        mSharedPreferences = requireActivity().getSharedPreferences("IPAddress", MODE_PRIVATE)
+//        mSharedPreferences = requireActivity().getSharedPreferences("IPPort", MODE_PRIVATE)
+//        mEditor = mSharedPreferences.edit()
+//
+//        val view =
+//            inflater.inflate(com.sixiaolong.androidwol.R.layout.fragment_wol, container, false)
+//
+//        val mMacAddress = view.findViewById<EditText>(R.id.MacAddress)
+//        val iIPAddress = view.findViewById<EditText>(R.id.IPAddress)
+//        val iIPPort = view.findViewById<EditText>(R.id.IPPort)
+//
+//        val mMacAddressString = mSharedPreferences.getString("MacAddress", "")
+//        val iIpAddressString = mSharedPreferences.getString("IPAddress", "")
+//        val iIPPortIntInt = mSharedPreferences.getInt("IPAddress", 0)
+//        // 如果有 读取上一次的配置
+//        if (mMacAddressString != null)
+//            mMacAddress.setText(mMacAddressString)
+//        if (mMacAddressString != null)
+//            iIPAddress.setText(iIpAddressString)
+//        if (mMacAddressString != null)
+//            iIPPort.setText(iIPPortIntInt.toString())
+//
+//        button = view.findViewById(com.sixiaolong.androidwol.R.id.WoLButton)
+//        button.setOnClickListener {
+//
+//            val macAddress = mMacAddress.text.toString()
+//            val ipAddress = iIPAddress.text.toString()
+//            val ipPort = iIPPort.text.toString().toInt()
+//
+//            // 保存本次配置
+//            mEditor.putString("MacAddress", macAddress)
+//            mEditor.putString("IPAddress", ipAddress)
+//            mEditor.putInt("IPPort", ipPort)
+//            mEditor.apply()
+//
+//            wakeOnLan(macAddress, ipAddress, ipPort)
+//        }
+//        return view
+//    }
 
     private fun wakeOnLan(macAddress: String, ipAddress: String, ipPort: Int) {
         GlobalScope.launch(Dispatchers.IO) {
